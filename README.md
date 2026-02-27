@@ -47,3 +47,62 @@ Para instalar todas las dependencias del proyecto, ejecuta el siguiente comando 
 
 ```bash
 pip install -r requirements.txt
+```
+
+# 🚀 Levantar un Proyecto en Django (Guía Esencial)
+
+## 1️⃣ Aplicar Migraciones
+
+Antes de iniciar el servidor, ejecuta:
+
+```bash
+python manage.py migrate
+```
+
+---
+
+## 2️⃣ Crear Superusuario (Admin)
+
+Para crear un usuario administrador:
+
+```bash
+python manage.py createsuperuser
+```
+
+Luego podrás acceder al panel en:
+
+```
+http://127.0.0.1:8000/admin/
+```
+
+---
+
+## 3️⃣ Levantar el Servidor en Local
+
+Para iniciar el proyecto en entorno local:
+
+```bash
+python manage.py runserver
+```
+
+El proyecto estará disponible en:
+
+```
+http://127.0.0.1:8000/
+```
+
+Si deseas usar otro puerto:
+
+```bash
+python manage.py runserver 8001
+```
+
+---
+
+## ✅ Flujo rápido recomendado
+
+```bash
+python manage.py migrate
+python manage.py createsuperuser
+python manage.py runserver
+```
