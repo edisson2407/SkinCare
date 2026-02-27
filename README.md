@@ -40,7 +40,10 @@ Es una tienda online con:
 WHATSAPP_NUMERO=593962733227
 ITEMS_POR_PAGINA=12
 ```
+# 📋 Requisitos Previos
 
+- **Python:** 3.10 o superior (recomendado 3.11+)
+  
 # 📦 Instalación de Dependencias
 
 Para instalar todas las dependencias del proyecto, ejecuta el siguiente comando en la raíz del proyecto:
