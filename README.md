@@ -39,3 +39,11 @@ Es una tienda online con:
 ```env
 WHATSAPP_NUMERO=593962733227
 ITEMS_POR_PAGINA=12
+```
+
+# 📦 Instalación de Dependencias
+
+Para instalar todas las dependencias del proyecto, ejecuta el siguiente comando en la raíz del proyecto:
+
+```bash
+pip install -r requirements.txt
