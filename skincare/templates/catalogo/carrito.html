@@ -1,0 +1,122 @@
+{% extends "base.html" %}
+{% load humanize %}
+
+{% block title %}Carrito - SkinCare{% endblock %}
+
+{% block content %}
+<h1 class="mb-3">Carrito</h1>
+
+{% if messages %}
+  {% for m in messages %}
+    <div class="alert {% if m.tags %}alert-{{ m.tags }}{% else %}alert-info{% endif %}">{{ m }}</div>
+  {% endfor %}
+{% endif %}
+
+{% if cart_items %}
+  <div class="row g-3">
+    <div class="col-lg-8">
+      <div class="table-responsive">
+        <table class="table align-middle">
+      <thead class="table-light">
+        <tr>
+          <th style="width:110px;">Imagen</th>
+          <th>Producto</th>
+          <th class="text-end" style="width:140px;">Precio</th>
+          <th style="width:260px;">Cantidad</th>
+          <th class="text-end" style="width:160px;">Subtotal</th>
+          <th style="width:110px;"></th>
+        </tr>
+      </thead>
+      <tbody>
+        {% for it in cart_items %}
+        <tr>
+          <td>
+            {% if it.img_url %}
+              <img src="{{ it.img_url }}" alt="{{ it.nombre }}" class="rounded border"
+                   style="width:88px;height:88px;object-fit:cover;">
+            {% else %}
+              <div class="d-flex align-items-center justify-content-center bg-light border rounded"
+                   style="width:88px;height:88px;">
+                <small class="text-muted">Sin imagen</small>
+              </div>
+            {% endif %}
+          </td>
+
+          <td class="fw-medium">
+            {{ it.nombre }}
+          </td>
+
+          <td class="text-end">
+            ${{ it.precio|floatformat:2 }}
+          </td>
+
+          <td>
+            <form method="post" action="{% url 'carrito_actualizar' %}" class="d-flex align-items-center gap-2">
+              {% csrf_token %}
+              <input type="hidden" name="id" value="{{ it.id }}">
+              <div class="input-group input-group-sm" style="max-width:160px;">
+                <input type="number" class="form-control" name="cantidad"
+                       value="{{ it.cantidad }}" min="1" max="{{ it.stock }}">
+                <button class="btn btn-outline-dark" type="submit">Actualizar</button>
+              </div>
+              <small class="text-muted">Stock: {{ it.stock }}</small>
+            </form>
+          </td>
+
+          <td class="text-end fw-semibold">
+            ${{ it.subtotal|floatformat:2 }}
+          </td>
+
+          <td>
+            <form method="post" action="{% url 'carrito_eliminar' %}">
+              {% csrf_token %}
+              <input type="hidden" name="id" value="{{ it.id }}">
+              <button class="btn btn-sm btn-outline-danger">Eliminar</button>
+            </form>
+          </td>
+        </tr>
+        {% endfor %}
+      </tbody>
+
+      <tfoot>
+        <tr>
+          <td colspan="4" class="text-end fw-bold">Total:</td>
+          <td class="text-end fw-bold">${{ total|floatformat:2 }}</td>
+          <td></td>
+        </tr>
+      </tfoot>
+        </table>
+      </div>
+    </div>
+
+    <aside class="col-lg-4">
+      <div class="card p-3 shadow-sm order-summary">
+        <h5 class="mb-3">Resumen del pedido</h5>
+        <div class="d-flex justify-content-between mb-2">
+          <span>Subtotal</span>
+          <strong>${{ total|floatformat:2 }}</strong>
+        </div>
+        <div class="d-flex justify-content-between mb-2">
+          <span>Envío</span>
+          <span>Gratis</span>
+        </div>
+        <div class="d-flex justify-content-between mb-3">
+          <span>Impuestos estimados</span>
+          <small class="text-muted">Se calculan al finalizar</small>
+        </div>
+        <hr>
+        <div class="d-flex justify-content-between align-items-center mb-3">
+          <strong>Total estimado</strong>
+          <strong>${{ total|floatformat:2 }}</strong>
+        </div>
+
+        <a href="{% url 'checkout_whatsapp' %}" class="btn btn-primary w-100 mb-2">Finalizar por WhatsApp</a>
+        <a href="{% url 'catalogo' %}" class="btn btn-outline-dark w-100">Seguir comprando</a>
+      </div>
+    </aside>
+  </div>
+{% else %}
+  <div class="alert alert-info">Tu carrito está vacío.</div>
+  <a href="{% url 'catalogo' %}" class="btn btn-primary">Ir al catálogo</a>
+{% endif %}
+{% endblock %}

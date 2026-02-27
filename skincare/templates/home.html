@@ -1,0 +1,130 @@
+{% extends "base.html" %}
+{% load humanize %}
+
+{% block title %}Glow Korea - Home{% endblock %}
+
+{% block content %}
+
+{% if banners %}
+<div id="homeCarousel" class="carousel slide mb-4" data-bs-ride="carousel">
+
+  <div class="carousel-indicators">
+    {% for b in banners %}
+      <button
+        type="button"
+        data-bs-target="#homeCarousel"
+        data-bs-slide-to="{{ forloop.counter0 }}"
+        class="{% if forloop.first %}active{% endif %}"
+        aria-current="{% if forloop.first %}true{% else %}false{% endif %}">
+      </button>
+    {% endfor %}
+  </div>
+
+  <div class="carousel-inner rounded-3 overflow-hidden">
+    {% for b in banners %}
+      <div class="carousel-item {% if forloop.first %}active{% endif %}">
+        <img src="{{ b.imagen.url }}"
+             class="d-block w-100 carousel-img"
+             style="max-height:420px; object-fit:cover;"
+             alt="{{ b.titulo|default:'Banner' }}">
+
+        {% if b.titulo or b.texto %}
+        <div class="carousel-caption d-none d-md-block rounded-2 p-3">
+          {% if b.titulo %}<h5 class="mb-1">{{ b.titulo }}</h5>{% endif %}
+          {% if b.texto %}<p class="mb-0">{{ b.texto }}</p>{% endif %}
+        </div>
+        {% endif %}
+      </div>
+    {% endfor %}
+  </div>
+
+  <button class="carousel-control-prev" type="button" data-bs-target="#homeCarousel" data-bs-slide="prev">
+    <span class="carousel-control-prev-icon"></span>
+  </button>
+
+  <button class="carousel-control-next" type="button" data-bs-target="#homeCarousel" data-bs-slide="next">
+    <span class="carousel-control-next-icon"></span>
+  </button>
+
+</div>
+{% endif %}
+
+
+<div class="d-flex align-items-end justify-content-between mb-3">
+  <div>
+    <h1 class="h3 mb-1">{{ cfg.titulo|default:"Descubre el mejor SkinCare coreano" }}</h1>
+
+    {% if cfg and cfg.subtitulo %}
+      <p class="text-muted mb-0" style="white-space: pre-line;">
+        {{ cfg.subtitulo }}
+      </p>
+    {% endif %}
+
+    <h2 class="h5 mt-3">Productos destacados</h2>
+  </div>
+
+  <a href="{% url 'catalogo' %}" class="btn btn-outline-dark">Ver catálogo</a>
+</div>
+
+<div class="row g-3">
+
+  {% for p in productos %}
+  <div class="col-6 col-md-4 col-lg-3">
+    <div class="card h-100">
+
+      {% with img=p.imagenes.all.0 %}
+        {% if img %}
+        <a href="{% url 'producto_detalle' p.slug %}">
+          <img src="{{ img.imagen.url }}"
+               class="card-img-top"
+               alt="{{ img.alt_text|default:p.nombre }}"
+               style="height:200px; object-fit:cover;">
+        </a>
+        {% else %}
+        <div class="card-img-top d-flex align-items-center justify-content-center bg-light"
+             style="height:200px;">
+          <span class="text-muted small">Sin imagen</span>
+        </div>
+        {% endif %}
+      {% endwith %}
+
+      <div class="card-body">
+        <h3 class="h6 card-title mb-1">
+          <a href="{% url 'producto_detalle' p.slug %}" class="link-dark text-decoration-none">
+            {{ p.nombre }}
+          </a>
+        </h3>
+        <div class="fw-semibold">${{ p.precio|floatformat:2 }}</div>
+      </div>
+
+      <div class="card-footer bg-white">
+        {% if p.stock > 0 %}
+        <form method="post" action="{% url 'carrito_agregar' %}" class="d-flex gap-2">
+          {% csrf_token %}
+          <input type="hidden" name="id" value="{{ p.id }}">
+          <input type="number"
+                 name="cantidad"
+                 value="1"
+                 min="1"
+                 max="{{ p.stock }}"
+                 class="form-control form-control-sm"
+                 style="max-width:80px;">
+          <button class="btn btn-sm btn-primary" type="submit">Agregar</button>
+        </form>
+        {% else %}
+        <span class="badge text-bg-secondary">Sin stock</span>
+        {% endif %}
+      </div>
+
+    </div>
+  </div>
+
+  {% empty %}
+  <div class="col">
+    <div class="alert alert-info">No hay productos destacados por ahora.</div>
+  </div>
+  {% endfor %}
+
+</div>
+
+{% endblock %}
