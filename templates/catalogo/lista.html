@@ -1,0 +1,97 @@
+{% extends "base.html" %}
+{% load humanize %}
+
+{% block title %}Catálogo - SkinCare{% endblock %}
+
+{% block content %}
+<section class="w-full py-12 bg-white">
+    <div class="max-w-7xl mx-auto px-4 md:px-8">
+        
+        <div class="text-center mb-12">
+            <div class="flex items-center justify-center gap-4 mb-3">
+                <span class="h-[1px] w-10 bg-[#ebe0a9]"></span>
+                <span class="uppercase tracking-[0.4em] text-[10px] font-bold text-[#194f22]/60">Colección Completa</span>
+                <span class="h-[1px] w-10 bg-[#ebe0a9]"></span>
+            </div>
+            <h1 class="text-3xl md:text-5xl font-medium text-[#194f22] uppercase tracking-tighter mb-4 font-['Montserrat']">
+                Catálogo de Belleza
+            </h1>
+        </div>
+
+        <div class="mb-12 p-6 bg-[#f8fff1]/50 border border-emerald-50 rounded-sm">
+            <form method="get" class="grid grid-cols-1 md:grid-cols-12 gap-4 items-end">
+                <div class="md:col-span-4">
+                    <label class="block text-[10px] uppercase tracking-widest font-bold text-[#194f22]/60 mb-2">Buscar</label>
+                    <input type="text" name="q" value="{{ filtros.q }}" class="w-full bg-white border border-emerald-100 focus:border-[#ebe0a9] text-sm p-2 outline-none" placeholder="¿Qué buscas hoy?">
+                </div>
+                <div class="md:col-span-3 col-span-6">
+                    <label class="block text-[10px] uppercase tracking-widest font-bold text-[#194f22]/60 mb-2">Categoría</label>
+                    <select name="categoria" class="w-full bg-white border border-emerald-100 text-sm p-2 outline-none appearance-none">
+                        <option value="">Todas</option>
+                        {% for c in categorias %}
+                            <option value="{{ c.slug }}" {% if filtros.categoria == c.slug %}selected{% endif %}>{{ c.nombre }}</option>
+                        {% endfor %}
+                    </select>
+                </div>
+                <div class="md:col-span-3 col-span-6">
+                    <label class="block text-[10px] uppercase tracking-widest font-bold text-[#194f22]/60 mb-2">Marca</label>
+                    <select name="marca" class="w-full bg-white border border-emerald-100 text-sm p-2 outline-none appearance-none">
+                        <option value="">Todas</option>
+                        {% for m in marcas %}
+                            <option value="{{ m.slug }}" {% if filtros.marca == m.slug %}selected{% endif %}>{{ m.nombre }}</option>
+                        {% endfor %}
+                    </select>
+                </div>
+                <div class="md:col-span-2">
+                    <button type="submit" class="w-full py-2 bg-[#194f22] text-white text-[10px] uppercase tracking-[0.2em] font-bold hover:bg-black transition-all duration-500">
+                        Filtrar
+                    </button>
+                </div>
+            </form>
+        </div>
+
+        <div class="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4 md:gap-8">
+            {% for p in page_obj.object_list %}
+            <div class="group bg-white overflow-hidden hover:shadow-xl hover:bg-black/90 active:scale-95 active:bg-[#194f22] active:border-[#ebe0a9] transition-all duration-300 flex flex-col border border-emerald-50 cursor-pointer border-2">
+                
+                <div class="relative overflow-hidden aspect-[4/5] bg-gray-50">
+                    {% with img=p.imagenes.all.0 %}
+                    <a href="{% url 'producto_detalle' p.slug %}" class="block h-full w-full">
+                        {% if img %}
+                        <img src="{{ img.imagen.url }}" 
+                             class="w-full h-full object-cover group-hover:scale-110 transition-transform duration-[1.5s] group-hover:opacity-40" 
+                             alt="{{ p.nombre }}">
+                        {% else %}
+                        <div class="w-full h-full flex items-center justify-center text-[#194f22]/20 text-xs italic">Sin imagen</div>
+                        {% endif %}
+                    </a>
+                    {% endwith %}
+                </div>
+
+                <div class="p-6 text-center flex-grow flex flex-col transition-colors duration-300">
+                    <h3 class="text-xs md:text-sm font-bold text-[#194f22] group-hover:text-[#ebe0a9] uppercase tracking-widest mb-2 h-10 overflow-hidden transition-colors">
+                        {{ p.nombre }}
+                    </h3>
+                    <p class="text-[#194f22]/60 group-hover:text-white font-medium text-lg mb-4 transition-colors">
+                        ${{ p.precio|floatformat:2 }}
+                    </p>
+                    
+                    <div class="mt-auto">
+                        {% if p.stock > 0 %}
+                        <form method="post" action="{% url 'carrito_agregar' %}" class="flex flex-col gap-2">
+                            {% csrf_token %}
+                            <input type="hidden" name="id" value="{{ p.id }}">
+                            <input type="hidden" name="cantidad" value="1">
+                            <button type="submit" class="w-full py-3 border border-[#194f22] text-[#194f22] bg-transparent group-hover:border-[#ebe0a9] group-hover:text-[#ebe0a9] group-active:bg-[#ebe0a9] group-active:text-[#194f22] transition-all duration-500 text-[9px] uppercase tracking-widest font-black">
+                                Añadir al Carrito
+                            </button>
+                        </form>
+                        {% endif %}
+                    </div>
+                </div>
+            </div>
+            {% endfor %}
+        </div>
+    </div>
+</section>
+{% endblock %}

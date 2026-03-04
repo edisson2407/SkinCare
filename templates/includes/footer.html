@@ -1,0 +1,46 @@
+{% load static %}
+<footer class="bg-[#e2f7f1] border-t border-emerald-100">
+    <div class="container mx-auto px-4 py-12">
+        <div class="grid grid-cols-1 md:grid-cols-3 gap-12 mb-10">
+
+            <div class="space-y-4">
+                <div class="flex items-center space-x-2">
+                    <span class="text-xl font-bold text-[#194f22] uppercase tracking-tighter" 
+                          style="font-family: 'Montserrat', sans-serif;">
+                        Glow Korea
+                    </span>
+                </div>
+                <p class="text-[#194f22]/70 text-sm leading-relaxed">
+                    Tu destino favorito para la mejor cosmética coreana. Brillo real para pieles reales.
+                </p>
+            </div>
+
+            <div>
+                <h4 class="text-[#194f22] font-semibold mb-4 uppercase tracking-wider text-xs">Explorar</h4>
+                <ul class="space-y-2 text-sm text-[#194f22]/80">
+                    <li><a href="{% url 'catalogo' %}" class="hover:text-[#ebe0a9] transition-colors duration-300">Ver Catálogo</a></li>
+                    <li><a href="#" class="hover:text-[#ebe0a9] transition-colors duration-300">Preguntas Frecuentes</a></li>
+                    <li><a href="#" class="hover:text-[#ebe0a9] transition-colors duration-300">Términos y Condiciones</a></li>
+                </ul>
+            </div>
+
+            <div>
+                <h4 class="text-[#194f22] font-semibold mb-4 uppercase tracking-wider text-xs">Conéctate</h4>
+                <div class="flex space-x-4">
+                    <a href="{{ instagram_url|default:'#' }}"
+                        class="w-10 h-10 bg-white flex items-center justify-center rounded-full text-[#194f22] shadow-sm hover:bg-[#ebe0a9] hover:text-white transition-all duration-300">
+                        <i class="bi bi-instagram text-lg"></i>
+                    </a>
+                    <a href="{{ whatsapp_url|default:'#' }}"
+                        class="w-10 h-10 bg-white flex items-center justify-center rounded-full text-[#194f22] shadow-sm hover:bg-[#ebe0a9] hover:text-white transition-all duration-300">
+                        <i class="bi bi-whatsapp text-lg"></i>
+                    </a>
+                </div>
+            </div>
+        </div>
+
+        <div class="border-t border-[#194f22]/10 pt-8 text-center text-[#194f22]/60 text-xs">
+            © {% now "Y" %} <span class="font-medium text-[#194f22]">Glow Korea</span>. Todos los derechos reservados.
+        </div>
+    </div>
+</footer>

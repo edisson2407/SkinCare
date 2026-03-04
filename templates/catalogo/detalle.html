@@ -1,0 +1,155 @@
+{% extends "base.html" %}
+{% load humanize %}
+
+{% block title %}{{ p.nombre }} - Glow Korea{% endblock %}
+
+{% block content %}
+<section class="w-full py-12 bg-white">
+    <div class="max-w-6xl mx-auto px-4 md:px-8">
+        
+        <div class="grid grid-cols-1 lg:grid-cols-12 gap-12 items-center">
+            
+            <div class="lg:col-span-6 flex flex-col items-center lg:items-end"> 
+                <div class="relative w-full max-w-[420px] aspect-[4/5] bg-[#f8fff1]/30 border border-emerald-50 overflow-hidden group rounded-sm shadow-sm">
+                    {% with first=p.imagenes.first %}
+                        {% if first %}
+                            <img id="mainImg"
+                                 src="{{ first.imagen.url }}"
+                                 alt="{{ first.alt_text|default:p.nombre }}"
+                                 class="w-full h-full object-contain p-6 transition-all duration-[1.5s] group-hover:scale-110">
+                        {% else %}
+                            <div class="w-full h-full flex items-center justify-center text-[#194f22]/20 italic">Sin imagen disponible</div>
+                        {% endif %}
+                    {% endwith %}
+                </div>
+
+                {% if p.imagenes.all %}
+                <div class="flex gap-3 mt-4 overflow-x-auto justify-center lg:justify-end w-full max-w-[420px]">
+                    {% for img in p.imagenes.all %}
+                    <button type="button"
+                            class="flex-shrink-0 thumb-btn transition-all duration-300 active:scale-90"
+                            data-src="{{ img.imagen.url }}">
+                        <div class="w-12 h-16 border border-emerald-50 overflow-hidden hover:border-[#ebe0a9] transition-colors {% if forloop.first %}border-[#194f22] border-2{% endif %} rounded-sm">
+                            <img src="{{ img.imagen.url }}"
+                                 alt="{{ img.alt_text|default:p.nombre }}"
+                                 class="w-full h-full object-cover">
+                        </div>
+                    </button>
+                    {% endfor %}
+                </div>
+                {% endif %}
+            </div>
+
+            <aside class="lg:col-span-6 flex justify-center lg:justify-start">
+                <div class="w-full max-w-[380px]">
+                    
+                    <div class="mb-6">
+                        <span class="text-[9px] uppercase tracking-[0.4em] text-[#ebe0a9] font-bold">Original Korean Formula</span>
+                        <h1 class="text-2xl md:text-3xl font-medium text-[#194f22] uppercase tracking-tighter mt-1 font-['Montserrat'] leading-tight">
+                            {{ p.nombre }}
+                        </h1>
+                    </div>
+
+                    <div class="bg-[#f8fff1]/60 border border-emerald-50 p-6 hover:bg-black/90 hover:border-[#ebe0a9] group transition-all duration-500 rounded-sm border-2">
+                        
+                        <div class="flex justify-between items-baseline mb-6">
+                            <span class="text-[9px] uppercase tracking-widest text-[#194f22]/60 group-hover:text-white/80 transition-colors font-bold">Inversión</span>
+                            <span class="text-2xl font-black text-[#194f22] group-hover:text-[#ebe0a9] transition-colors font-['Montserrat']">
+                                ${{ p.precio|floatformat:2 }}
+                            </span>
+                        </div>
+
+                        {% if p.stock > 0 %}
+                        <form method="post" action="{% url 'carrito_agregar' %}">
+                            {% csrf_token %}
+                            <input type="hidden" name="id" value="{{ p.id }}">
+
+                            <div class="mb-6">
+                                <label class="block text-[9px] uppercase tracking-widest font-bold text-[#194f22]/60 group-hover:text-white/60 mb-2 transition-colors">Cantidad</label>
+                                <input type="number" name="cantidad" value="1" min="1" max="{{ p.stock }}"
+                                       class="w-full bg-white border border-emerald-100 p-2 text-sm outline-none focus:border-[#ebe0a9] transition-all rounded-sm">
+                                <p class="text-[8px] uppercase tracking-tighter mt-2 text-emerald-700 group-hover:text-[#ebe0a9] transition-colors italic font-bold">
+                                    Disponibles: {{ p.stock }} unidades
+                                </p>
+                            </div>
+
+                            <button type="submit" 
+                                    class="w-full py-3 bg-[#194f22] text-white text-[10px] uppercase tracking-[0.2em] font-black group-hover:bg-[#ebe0a9] group-hover:text-[#194f22] transition-all duration-500 shadow-lg active:scale-95">
+                                Agregar a la Carrito
+                            </button>
+                        </form>
+                        {% else %}
+                        <div class="py-3 border border-red-100 text-red-800 text-center text-[9px] uppercase tracking-widest font-bold bg-red-50/50">
+                            Agotado Temporalmente
+                        </div>
+                        {% endif %}
+
+                        <hr class="my-6 border-emerald-100 group-hover:border-white/10 transition-colors">
+
+                        <ul class="space-y-3 text-[9px] uppercase tracking-[0.15em] font-bold text-[#194f22]/70 group-hover:text-white/80 transition-colors">
+                            <li class="flex items-center gap-2">
+                                <span class="w-1.5 h-1.5 bg-[#ebe0a9] rounded-full"></span> Envío a todo Ecuador
+                            </li>
+                            <li class="flex items-center gap-2">
+                                <span class="w-1.5 h-1.5 bg-[#ebe0a9] rounded-full"></span> Garantía Glow Korea
+                            </li>
+                            <li class="flex items-center gap-2">
+                                <span class="w-1.5 h-1.5 bg-[#ebe0a9] rounded-full"></span> 100% Original
+                            </li>
+                        </ul>
+                    </div>
+
+                    <div class="mt-6 text-center">
+                        <a href="{% url 'catalogo' %}" class="text-[9px] uppercase tracking-[0.3em] text-[#194f22]/40 hover:text-[#194f22] transition-all border-b border-transparent hover:border-[#ebe0a9] pb-1">
+                            ← Regresar al catálogo
+                        </a>
+                    </div>
+                </div>
+            </aside>
+        </div>
+
+        {% if p.descripcion %}
+        <div class="mt-20 border-t border-emerald-50 pt-12 max-w-3xl mx-auto">
+            <div class="text-center mb-8">
+                <div class="flex items-center justify-center gap-4 mb-2">
+                    <span class="h-[1px] w-10 bg-[#ebe0a9]"></span>
+                    <h2 class="text-[11px] uppercase tracking-[0.4em] font-black text-[#194f22]">Ritual de Uso</h2>
+                    <span class="h-[1px] w-10 bg-[#ebe0a9]"></span>
+                </div>
+                <p class="text-[9px] text-gray-400 uppercase tracking-widest italic">Descubre el poder de tu piel</p>
+            </div>
+            
+            <div class="product-description text-gray-600 leading-relaxed font-['Montserrat'] text-sm md:text-base text-center italic">
+                {{ p.descripcion|linebreaksbr }}
+            </div>
+        </div>
+        {% endif %}
+
+    </div>
+</section>
+{% endblock %}
+
+{% block scripts %}
+<script>
+    document.querySelectorAll('.thumb-btn').forEach(function (btn) {
+        btn.addEventListener('click', function () {
+            const src = this.getAttribute('data-src');
+            const main = document.getElementById('mainImg');
+            if (src && main) {
+                main.classList.add('opacity-0', 'scale-95');
+                setTimeout(() => {
+                    main.src = src;
+                    main.classList.remove('opacity-0', 'scale-95');
+                }, 250);
+            }
+
+            // Actualizar bordes de miniaturas
+            document.querySelectorAll('.thumb-btn div').forEach(div => {
+                div.classList.remove('border-[#194f22]', 'border-2');
+                div.classList.add('border-emerald-50');
+            });
+            this.querySelector('div').classList.add('border-[#194f22]', 'border-2');
+        });
+    });
+</script>
+{% endblock %}

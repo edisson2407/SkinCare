@@ -1,0 +1,3 @@
+    /* Esto quita los márgenes que Django o Bootstrap ponen al contenedor base */
+    .container { max-width: 100% !important; padding-left: 0 !important; padding-right: 0 !important; }
+    body { overflow-x: hidden; }
