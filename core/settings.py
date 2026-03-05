@@ -37,11 +37,6 @@ INSTALLED_APPS = [
     'theme',
 ]
 
-# Solo en desarrollo
-if DEBUG:
-    INSTALLED_APPS += [
-        'django_browser_reload',
-    ]
 
 
 # Middleware
@@ -56,11 +51,6 @@ MIDDLEWARE = [
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
 ]
 
-# Solo desarrollo
-if DEBUG:
-    MIDDLEWARE += [
-        "django_browser_reload.middleware.BrowserReloadMiddleware",
-    ]
 
 
 ROOT_URLCONF = 'core.urls'
