@@ -31,8 +31,8 @@ class Marca(models.Model):
         return self.nombre
 
 class Producto(models.Model):
-    categoria = models.ForeignKey(Categoria, on_delete=models.PROTECT)
-    marca = models.ForeignKey(Marca, on_delete=models.SET_NULL, null=True, blank=True)
+    categoria = models.ForeignKey('Categoria', on_delete=models.PROTECT)
+    marca = models.ForeignKey('Marca', on_delete=models.SET_NULL, null=True, blank=True)
     nombre = models.CharField(max_length=140)
     slug = models.SlugField(max_length=160, unique=True)
     descripcion = models.TextField(blank=True)
@@ -51,8 +51,9 @@ class Producto(models.Model):
     def __str__(self):
         return self.nombre
 
+# Simplificamos la ruta para Cloudinary
 def producto_image_path(instance, filename):
-    return f"productos/{instance.producto_id}/{filename}"
+    return f"productos/{filename}"
 
 class ProductoImagen(models.Model):
     producto = models.ForeignKey(Producto, on_delete=models.CASCADE, related_name="imagenes")
@@ -60,40 +61,11 @@ class ProductoImagen(models.Model):
     alt_text = models.CharField(max_length=140, blank=True)
     orden = models.PositiveIntegerField(default=0)
 
-    MAX_SIZE = (1080, 1080)
-    MAX_BYTES = 300 * 1024  # 300 KB
-
-    def save(self, *args, **kwargs):
-        # Guardado normal primero
-        super().save(*args, **kwargs)
-
-        # Re-abrir y procesar
-        img = Image.open(self.imagen.path).convert("RGB")
-        # Redimensionar manteniendo proporción y encajar en 1080x1080 (cover centrado)
-        img.thumbnail(self.MAX_SIZE, Image.Resampling.LANCZOS)
-        # Si no queda cuadrada, pegamos sobre lienzo 1080x1080 (fondo blanco)
-        if img.size != self.MAX_SIZE:
-            canvas = Image.new("RGB", self.MAX_SIZE, (255, 255, 255))
-            x = (self.MAX_SIZE[0] - img.size[0]) // 2
-            y = (self.MAX_SIZE[1] - img.size[1]) // 2
-            canvas.paste(img, (x, y))
-            img = canvas
-
-        # Comprimir hasta <= 300 KB
-        quality = 90
-        while quality > 40:
-            buffer = BytesIO()
-            img.save(buffer, format="JPEG", quality=quality, optimize=True)
-            size = buffer.tell()
-            if size <= self.MAX_BYTES:
-                break
-            quality -= 5
-
-        # Reemplazar archivo
-        file_content = ContentFile(buffer.getvalue())
-        filename = self.imagen.name.rsplit("/", 1)[-1]
-        self.imagen.save(filename, file_content, save=False)
-        super().save(update_fields=["imagen"])
+    # ELIMINAMOS el método save complejo que causaba el error 500
+    # Cloudinary se encarga de la optimización automáticamente
+    
+    def __str__(self):
+        return f"Imagen de {self.producto.nombre}"
 
 class HomeConfig(models.Model):
     titulo = models.CharField(max_length=120, default="Descubre el mejor SkinCare coreano")
