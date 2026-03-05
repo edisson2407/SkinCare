@@ -8,25 +8,24 @@ import os
 from dotenv import load_dotenv
 import dj_database_url
 
+# Directorio Base
 BASE_DIR = Path(__file__).resolve().parent.parent
 
+# Cargar variables de entorno (.env)
 load_dotenv()
 
-# Seguridad
-SECRET_KEY = os.getenv("SECRET_KEY", "insegura-dev")
+# --- CONFIGURACIÓN DE SEGURIDAD ---
+SECRET_KEY = os.getenv("SECRET_KEY", "django-insecure-n!^h1gl%_)^6i8$ji)$6&2^b_jfmr(y*t4()7e%(eljtnem+f4")
+
+# En Render, DEBUG debe ser False para velocidad y seguridad
 DEBUG = os.getenv("DEBUG", "False") == "True"
 
-ALLOWED_HOSTS = os.getenv(
-    "ALLOWED_HOSTS",
-    "127.0.0.1,localhost,.onrender.com"
-).split(",")
+# Dominios permitidos (En Render usa el asterisco "*" o tu dominio exacto sin https://)
+ALLOWED_HOSTS = os.getenv("ALLOWED_HOSTS", "127.0.0.1,localhost,*").split(",")
 
-
-
-
-# Aplicaciones
+# --- DEFINICIÓN DE APLICACIONES ---
 INSTALLED_APPS = [
-    'cloudinary_storage',
+    'cloudinary_storage',  # DEBE IR PRIMERO para capturar archivos media
     'django.contrib.admin',
     'django.contrib.auth',
     'django.contrib.contenttypes',
@@ -34,18 +33,16 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
     'django.contrib.humanize',
-    'cloudinary',
-    'catalogo',
-    'tailwind',
-    'theme',
+    'cloudinary',          # Conexión con el servicio en la nube
+    'catalogo',            # Tu aplicación de tienda
+    'tailwind',            # Integración de Tailwind
+    'theme',               # Tu tema de diseño
 ]
 
-
-
-# Middleware
+# --- MIDDLEWARE ---
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
-    "whitenoise.middleware.WhiteNoiseMiddleware",
+    "whitenoise.middleware.WhiteNoiseMiddleware",  # Para servir archivos estáticos (CSS/JS)
     'django.contrib.sessions.middleware.SessionMiddleware',
     'django.middleware.common.CommonMiddleware',
     'django.middleware.csrf.CsrfViewMiddleware',
@@ -54,12 +51,9 @@ MIDDLEWARE = [
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
 ]
 
-
-
 ROOT_URLCONF = 'core.urls'
 
-
-# Templates
+# --- PLANTILLAS (TEMPLATES) ---
 TEMPLATES = [
     {
         'BACKEND': 'django.template.backends.django.DjangoTemplates',
@@ -71,17 +65,15 @@ TEMPLATES = [
                 'django.template.context_processors.request',
                 'django.contrib.auth.context_processors.auth',
                 'django.contrib.messages.context_processors.messages',
-                'core.context_processors.cart_context',
+                'core.context_processors.cart_context', # Procesador del carrito
             ],
         },
     },
 ]
 
-
 WSGI_APPLICATION = 'core.wsgi.application'
 
-
-# Base de datos
+# --- BASE DE DATOS (PostgreSQL en Render) ---
 DATABASES = {
     "default": dj_database_url.config(
         default=f"sqlite:///{BASE_DIR / 'db.sqlite3'}",
@@ -89,58 +81,32 @@ DATABASES = {
     )
 }
 
-
-# Validadores
+# --- VALIDACIÓN DE CONTRASEÑAS ---
 AUTH_PASSWORD_VALIDATORS = [
-    {
-        'NAME': 'django.contrib.auth.password_validation.UserAttributeSimilarityValidator',
-    },
-    {
-        'NAME': 'django.contrib.auth.password_validation.MinimumLengthValidator',
-    },
-    {
-        'NAME': 'django.contrib.auth.password_validation.CommonPasswordValidator',
-    },
-    {
-        'NAME': 'django.contrib.auth.password_validation.NumericPasswordValidator',
-    },
+    {'NAME': 'django.contrib.auth.password_validation.UserAttributeSimilarityValidator'},
+    {'NAME': 'django.contrib.auth.password_validation.MinimumLengthValidator'},
+    {'NAME': 'django.contrib.auth.password_validation.CommonPasswordValidator'},
+    {'NAME': 'django.contrib.auth.password_validation.NumericPasswordValidator'},
 ]
 
-
-# Internacionalización
+# --- INTERNACIONALIZACIÓN ---
 LANGUAGE_CODE = 'es'
 TIME_ZONE = 'America/Guayaquil'
 USE_I18N = True
 USE_TZ = True
 
-
-# Archivos estáticos
+# --- ARCHIVOS ESTÁTICOS (CSS, JS) ---
 STATIC_URL = 'static/'
 STATIC_ROOT = BASE_DIR / "staticfiles"
 STATICFILES_DIRS = [BASE_DIR / "static"]
 
+# Configuración WhiteNoise corregida para evitar errores de despliegue en Render
 STATICFILES_STORAGE = "whitenoise.storage.StaticFilesStorage"
 WHITENOISE_USE_FINDERS = True
 
-
-# Archivos media
-MEDIA_URL = "media/"
-MEDIA_ROOT = BASE_DIR / "media"
-
-
-# Default PK
-DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
-
-
-# Tailwind
-TAILWIND_APP_NAME = 'theme'
-INTERNAL_IPS = ["127.0.0.1"]
-
-
-
-# Configuración de Cloudinary
-INSTALLED_APPS.insert(0, 'cloudinary_storage') # Debe ir al inicio
-INSTALLED_APPS.append('cloudinary')
+# --- ARCHIVOS MEDIA (Imágenes en Cloudinary) ---
+# Al configurar Cloudinary, las imágenes se guardarán permanentemente en la nube
+DEFAULT_FILE_STORAGE = 'cloudinary_storage.storage.MediaCloudinaryStorage'
 
 CLOUDINARY_STORAGE = {
     'CLOUD_NAME': os.getenv('CLOUDINARY_CLOUD_NAME'),
@@ -148,4 +114,12 @@ CLOUDINARY_STORAGE = {
     'API_SECRET': os.getenv('CLOUDINARY_API_SECRET'),
 }
 
-DEFAULT_FILE_STORAGE = 'cloudinary_storage.storage.MediaCloudinaryStorage'
+MEDIA_URL = "media/"
+MEDIA_ROOT = BASE_DIR / "media"
+
+# --- OTRAS CONFIGURACIONES ---
+DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
+
+# Tailwind settings
+TAILWIND_APP_NAME = 'theme'
+INTERNAL_IPS = ["127.0.0.1"]
