@@ -1,0 +1,216 @@
+{% extends "base.html" %}
+{% load humanize %}
+
+{% block title %}Glow Korea - Home{% endblock %}
+
+{% block content %}
+<div class="w-full m-0 p-0 overflow-x-hidden bg-[#f8fff1]">
+<section class="relative w-full flex flex-col md:flex-row items-stretch min-h-[600px] md:h-[80vh] lg:h-[70vh] overflow-hidden bg-white m-0 p-0">
+    
+    <div class="w-full md:w-5/12 lg:w-4/12 bg-black/95 text-white flex flex-col justify-center m-0 p-8 md:p-16 lg:p-24 shadow-2xl z-10">
+        
+        <div class="flex items-center gap-4 mb-6">
+            <span class="h-[1px] w-10 bg-[#ebe0a9]"></span>
+            <span class="uppercase tracking-[0.4em] text-[10px] font-bold text-[#ebe0a9]">
+                Sobre Nosotros
+            </span>
+        </div>
+
+        <h1 class="text-3xl md:text-5xl lg:text-6xl font-black mb-6 uppercase tracking-tighter leading-[0.9] font-['Montserrat']">
+            {{ cfg.titulo|default:"Tu Piel, Nuestra Pasión" }}
+        </h1>
+        
+        <p class="text-sm md:text-base text-gray-400 mb-10 italic font-light leading-relaxed max-w-[350px] font-['Montserrat']">
+            "Llevamos la vanguardia del Skincare a tu hogar con ese brillo natural que siempre buscaste."
+        </p>
+
+        <div>
+            <a href="{% url 'catalogo' %}" 
+               class="inline-block px-10 py-4 bg-[#ebe0a9] text-black no-underline uppercase tracking-[0.2em] text-[12px] font-bold hover:bg-white hover:scale-105 transition-all duration-500 shadow-2xl">
+                Ver Catálogo
+            </a>
+        </div>
+    </div>
+
+    <div class="w-full md:w-7/12 lg:w-8/12 bg-gray-100 m-0 p-0 relative">
+        <div class="absolute inset-0 w-full h-full">
+            {% include 'includes/carousel.html' %}
+        </div>
+    </div>
+</section>
+
+<section class="w-full py-20 bg-white border-t border-emerald-50">
+    <div class="max-w-7xl mx-auto px-4 md:px-8">
+        
+        <div class="text-center mb-16">
+            <div class="flex items-center justify-center gap-4 mb-3">
+                <span class="h-[1px] w-10 bg-[#ebe0a9]"></span>
+                <span class="uppercase tracking-[0.4em] text-[10px] font-bold text-[#194f22]/60">Piel Radiante</span>
+                <span class="h-[1px] w-10 bg-[#ebe0a9]"></span>
+            </div>
+            <h2 class="text-3xl md:text-5xl font-black text-[#194f22] uppercase tracking-tighter font-['Montserrat']">
+                Tu Rutina en 6 Pasos
+            </h2>
+            <p class="mt-4 text-sm md:text-base text-gray-500 italic font-light max-w-2xl mx-auto leading-relaxed">
+                "El secreto coreano para una piel luminosa, equilibrada y saludable."
+            </p>
+        </div>
+
+        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+            
+            <div class="group grid grid-cols-[100px_1fr] gap-6 p-8 bg-[#f8fff1]/50 border border-emerald-50 hover:bg-black/75 transition-all duration-700 items-center">
+                <div class="aspect-square overflow-hidden rounded-lg">
+                    <img src="/media/home_banners/1.png" alt="Limpieza Doble" class="w-full h-full object-cover transition-all duration-700 group-hover:sepia group-hover:hue-rotate-[10deg] group-hover:saturate-[0.5] group-hover:brightness-[1.1]">
+                </div>
+                <div>
+                    <span class="text-4xl font-black text-[#ebe0a9] group-hover:text-white/20 transition-colors">01</span>
+                    <h3 class="mt-4 text-lg font-bold text-[#194f22] group-hover:text-[#ebe0a9] uppercase tracking-widest transition-colors">Limpieza Doble</h3>
+                    <p class="mt-3 text-sm text-gray-600 group-hover:text-gray-300 font-['Montserrat'] leading-relaxed">
+                        Primero con aceite para retirar maquillaje y sebo, luego con un limpiador al agua para dejar la piel fresca.
+                    </p>
+                </div>
+            </div>
+
+            <div class="group grid grid-cols-[100px_1fr] gap-6 p-8 bg-[#f8fff1]/50 border border-emerald-50 hover:bg-black/75 transition-all duration-700 items-center">
+                <div class="aspect-square overflow-hidden rounded-lg">
+                    <img src="/media/home_banners/2.png" alt="Tónico Equilibrante" class="w-full h-full object-cover transition-all duration-700 group-hover:sepia group-hover:hue-rotate-[10deg] group-hover:saturate-[0.5] group-hover:brightness-[1.1]">
+                </div>
+                <div>
+                    <span class="text-4xl font-black text-[#ebe0a9] group-hover:text-white/20 transition-colors">02</span>
+                    <h3 class="mt-4 text-lg font-bold text-[#194f22] group-hover:text-[#ebe0a9] uppercase tracking-widest transition-colors">Tónico Equilibrante</h3>
+                    <p class="mt-3 text-sm text-gray-600 group-hover:text-gray-300 font-['Montserrat'] leading-relaxed">
+                        Restaura el pH, hidrata y prepara la piel para absorber mejor los siguientes productos.
+                    </p>
+                </div>
+            </div>
+
+            <div class="group grid grid-cols-[100px_1fr] gap-6 p-8 bg-[#f8fff1]/50 border border-emerald-50 hover:bg-black/75 transition-all duration-700 items-center">
+                <div class="aspect-square overflow-hidden rounded-lg">
+                    <img src="/media/home_banners/3.png" alt="Esencia y Sérums" class="w-full h-full object-cover transition-all duration-700 group-hover:sepia group-hover:hue-rotate-[10deg] group-hover:saturate-[0.5] group-hover:brightness-[1.1]">
+                </div>
+                <div>
+                    <span class="text-4xl font-black text-[#ebe0a9] group-hover:text-white/20 transition-colors">03</span>
+                    <h3 class="mt-4 text-lg font-bold text-[#194f22] group-hover:text-[#ebe0a9] uppercase tracking-widest transition-colors">Esencia y Sérums</h3>
+                    <p class="mt-3 text-sm text-gray-600 group-hover:text-gray-300 font-['Montserrat'] leading-relaxed">
+                        Hidratan profundamente y tratan necesidades como manchas, acné, arrugas o deshidratación.
+                    </p>
+                </div>
+            </div>
+
+            <div class="group grid grid-cols-[100px_1fr] gap-6 p-8 bg-[#f8fff1]/50 border border-emerald-50 hover:bg-black/75 transition-all duration-700 items-center">
+                <div class="aspect-square overflow-hidden rounded-lg">
+                    <img src="/media/home_banners/4.png" alt="Mascarillas" class="w-full h-full object-cover transition-all duration-700 group-hover:sepia group-hover:hue-rotate-[10deg] group-hover:saturate-[0.5] group-hover:brightness-[1.1]">
+                </div>
+                <div>
+                    <span class="text-4xl font-black text-[#ebe0a9] group-hover:text-white/20 transition-colors">04</span>
+                    <h3 class="mt-4 text-lg font-bold text-[#194f22] group-hover:text-[#ebe0a9] uppercase tracking-widest transition-colors">Mascarillas</h3>
+                    <p class="mt-3 text-sm text-gray-600 group-hover:text-gray-300 font-['Montserrat'] leading-relaxed">
+                        Un impulso rápido de hidratación y luminosidad en solo minutos. Ideal para consentirte.
+                    </p>
+                </div>
+            </div>
+
+            <div class="group grid grid-cols-[100px_1fr] gap-6 p-8 bg-[#f8fff1]/50 border border-emerald-50 hover:bg-black/75 transition-all duration-700 items-center">
+                <div class="aspect-square overflow-hidden rounded-lg">
+                    <img src="/media/home_banners/5.png" alt="Crema Hidratante" class="w-full h-full object-cover transition-all duration-700 group-hover:sepia group-hover:hue-rotate-[10deg] group-hover:saturate-[0.5] group-hover:brightness-[1.1]">
+                </div>
+                <div>
+                    <span class="text-4xl font-black text-[#ebe0a9] group-hover:text-white/20 transition-colors">05</span>
+                    <h3 class="mt-4 text-lg font-bold text-[#194f22] group-hover:text-[#ebe0a9] uppercase tracking-widest transition-colors">Crema Hidratante</h3>
+                    <p class="mt-3 text-sm text-gray-600 group-hover:text-gray-300 font-['Montserrat'] leading-relaxed">
+                        Sella la humedad, fortalece la barrera cutánea y deja la piel suave y saludable.
+                    </p>
+                </div>
+            </div>
+
+            <div class="group grid grid-cols-[100px_1fr] gap-6 p-8 bg-[#f8fff1]/50 border border-emerald-50 hover:bg-black/75 transition-all duration-700 items-center">
+                <div class="aspect-square overflow-hidden rounded-lg">
+                    <img src="/media/home_banners/6.png" alt="Protector Solar" class="w-full h-full object-cover transition-all duration-700 group-hover:sepia group-hover:hue-rotate-[10deg] group-hover:saturate-[0.5] group-hover:brightness-[1.1]">
+                </div>
+                <div>
+                    <span class="text-4xl font-black text-[#ebe0a9] group-hover:text-white/20 transition-colors">06</span>
+                    <h3 class="mt-4 text-lg font-bold text-[#194f22] group-hover:text-[#ebe0a9] uppercase tracking-widest transition-colors">Protector Solar</h3>
+                    <p class="mt-3 text-sm text-gray-600 group-hover:text-gray-300 font-['Montserrat'] leading-relaxed">
+                        El paso indispensable para prevenir manchas, envejecimiento y daño solar cada mañana.
+                    </p>
+                </div>
+            </div>
+
+        </div>
+    </div>
+</section>
+
+<section class="w-full pt-12 pb-0 bg-[#f8fff1] m-0 p-0">
+    <div class="w-full px-4 md:px-8">
+        <div class="text-center mb-8">
+            <h2 class="text-2xl md:text-4xl font-medium text-[#194f22] uppercase tracking-tighter mb-2 font-['Montserrat']">
+                Selección de Temporada
+            </h2>
+            <div class="w-20 h-1 bg-[#ebe0a9] mx-auto"></div>
+        </div>
+
+        <div class="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-5 gap-3 md:gap-4 mb-20">
+            {% for p in productos %}
+            <div class="group bg-white overflow-hidden shadow-sm hover:shadow-xl transition-all duration-700 flex flex-col border border-emerald-50 max-w-[280px] mx-auto w-full">
+                <div class="relative overflow-hidden aspect-[4/5]">
+                    {% with img=p.imagenes.all.0 %}
+                    <a href="{% url 'producto_detalle' p.slug %}" class="block h-full w-full">
+                        <img src="{{ img.imagen.url }}" 
+                             class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-[1.5s]" 
+                             alt="{{ p.nombre }}">
+                    </a>
+                    {% endwith %}
+                    
+                    {% if p.stock <= 5 and p.stock > 0 %}
+                        <span class="absolute top-2 left-2 bg-red-600 text-white text-[8px] px-1.5 py-0.5 rounded-sm uppercase font-bold">Últimas unidades</span>
+                    {% endif %}
+                </div>
+
+                <div class="p-3 text-center flex-grow flex flex-col justify-between">
+                    <div>
+                        <h3 class="text-[10px] md:text-sm font-bold text-[#194f22] uppercase tracking-tight mb-1 truncate">
+                            {{ p.nombre }}
+                        </h3>
+                        <p class="text-[#194f22]/70 font-semibold text-sm mb-3">${{ p.precio|floatformat:2 }}</p>
+                    </div>
+                    
+                    <form method="post" action="{% url 'carrito_agregar' %}" class="mt-auto">
+                        {% csrf_token %}
+                        <input type="hidden" name="id" value="{{ p.id }}">
+                        <input type="hidden" name="cantidad" value="1">
+                        <button type="submit" 
+                                class="w-full py-2 border border-[#194f22] text-[#194f22] bg-transparent hover:bg-[#194f22] hover:text-white transition-all duration-500 text-[9px] uppercase tracking-tighter font-bold">
+                            Añadir
+                        </button>
+                    </form>
+                </div>
+            </div>
+            {% empty %}
+            <div class="col-span-full text-center py-20">
+                <p class="text-xl text-emerald-800/30 italic font-light tracking-widest font-['Montserrat']">Próximamente...</p>
+            </div>
+            {% endfor %}
+        </div>
+    </div>
+</section>
+
+</div>
+{% endblock %}
+
+{% block js %}
+<script src="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.js"></script>
+<script>
+    var swiper = new Swiper(".mySwiper", {
+        loop: true,
+        effect: "fade",
+        autoplay: {
+            delay: 5000,
+            disableOnInteraction: false,
+        },
+        pagination: {
+            el: ".swiper-pagination",
+            clickable: true,
+        },
+    });
+</script>
+{% endblock %}

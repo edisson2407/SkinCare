@@ -1,0 +1,47 @@
+<!doctype html>
+<html lang="es" class="h-full">
+
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Glow Korea</title>
+
+  {% load static %}
+  {% load tailwind_tags %}
+
+  <link rel="icon" type="image/x-icon" href="/media/home_banners/favicon.ico">
+
+  {% tailwind_css %}
+
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.css" rel="stylesheet">
+</head>
+
+<body class="bg-gray-50 flex flex-col min-h-screen font-sans antialiased text-gray-900">
+
+  {% include 'includes/navbar.html' %}
+
+  <main class="flex-grow m-0 p-0">
+    <div class="w-full m-0 p-0">
+      
+      {% if messages %}
+      <div class="container mx-auto px-4 pt-4"> {% for m in messages %}
+        <div
+          class="p-4 mb-6 text-sm rounded-xl shadow-sm border {% if m.tags == 'success' %}bg-emerald-50 text-emerald-800 border-emerald-200{% else %}bg-blue-50 text-blue-800 border-blue-200{% endif %}">
+          {{ m }}
+        </div>
+        {% endfor %}
+      </div>
+      {% endif %}
+
+      {% block content %}
+      {% endblock %}
+      
+    </div>
+  </main>
+
+  {% include 'includes/footer.html' %}
+
+  {% block scripts %}{% endblock %}
+</body>
+
+</html>

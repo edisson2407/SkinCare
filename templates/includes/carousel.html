@@ -1,0 +1,65 @@
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.css" />
+
+<div class="swiper mySwiper w-full h-full group relative">
+    <div class="swiper-wrapper">
+        {% for banner in banners %}
+        <div class="swiper-slide">
+            <img src="{{ banner.imagen.url }}" alt="{{ banner.titulo }}" class="w-full h-full object-cover object-center">
+        </div>
+        {% empty %}
+        <div class="swiper-slide">
+            <img src="/media/home_banners/placeholder.png" class="w-full h-full object-cover object-center">
+        </div>
+        {% endfor %}
+    </div>
+
+    <div class="swiper-button-prev !text-[#ebe0a9] !left-4 opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div>
+    <div class="swiper-button-next !text-[#ebe0a9] !right-4 opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div>
+    <div class="swiper-pagination !bottom-4"></div>
+</div>
+
+<style>
+    /* Forzamos al swiper a ser tan alto como el bloque negro de al lado */
+    .mySwiper {
+        min-height: 400px; /* Altura mínima para que no se vea chiquito en móvil */
+        height: 100% !important;
+    }
+
+    .swiper-pagination-bullet-active {
+        background: #ebe0a9 !important;
+    }
+
+    .swiper-button-next::after,
+    .swiper-button-prev::after {
+        font-size: 20px !important;
+        font-weight: bold;
+    }
+
+    .swiper-slide {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        overflow: hidden;
+    }
+</style>
+
+<script src="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.js"></script>
+<script>
+    var swiper = new Swiper(".mySwiper", {
+        loop: true,
+        effect: "fade",
+        fadeEffect: { crossFade: true },
+        autoplay: {
+            delay: 4000,
+            disableOnInteraction: false,
+        },
+        navigation: {
+            nextEl: ".swiper-button-next",
+            prevEl: ".swiper-button-prev",
+        },
+        pagination: {
+            el: ".swiper-pagination",
+            clickable: true,
+        },
+    });
+</script>
