@@ -2,15 +2,15 @@
 
 <div class="swiper mySwiper w-full h-full group relative">
     <div class="swiper-wrapper">
+        {% for banner in banners %}
         <div class="swiper-slide">
-            <img src="/media/home_banners/as.png" class="w-full h-full object-cover object-center">
+            <img src="{{ banner.imagen.url }}" alt="{{ banner.titulo }}" class="w-full h-full object-cover object-center">
         </div>
+        {% empty %}
         <div class="swiper-slide">
-            <img src="/media/home_banners/asd.png" class="w-full h-full object-cover object-center">
+            <img src="/media/home_banners/placeholder.png" class="w-full h-full object-cover object-center">
         </div>
-        <div class="swiper-slide">
-            <img src="/media/home_banners/glow korea.png" class="w-full h-full object-cover object-center">
-        </div>
+        {% endfor %}
     </div>
 
     <div class="swiper-button-prev !text-[#ebe0a9] !left-4 opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div>

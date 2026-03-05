@@ -113,8 +113,6 @@ class HomeConfig(models.Model):
 
 class Banner(models.Model):
     imagen = models.ImageField(upload_to="home_banners/")
-    titulo = models.CharField(max_length=120, blank=True)
-    texto = models.CharField(max_length=220, blank=True)
     orden = models.PositiveIntegerField(default=0)
     activo = models.BooleanField(default=True)
 
@@ -122,4 +120,4 @@ class Banner(models.Model):
         ordering = ["orden"]
 
     def __str__(self):
-        return self.titulo or f"Banner #{self.pk}"
+        return f"Banner #{self.pk}"

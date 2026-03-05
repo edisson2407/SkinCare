@@ -51,5 +51,7 @@ class HomeConfigAdmin(admin.ModelAdmin):
 
 @admin.register(Banner)
 class BannerAdmin(admin.ModelAdmin):
-    list_display = ("titulo", "orden", "activo")
+    list_display = ("id", "orden", "activo")
     list_editable = ("orden", "activo")
+    list_filter = ("activo",)
+    fields = ("imagen", "orden", "activo")

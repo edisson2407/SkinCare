@@ -20,7 +20,13 @@ from .cart import Cart
 
 def home(request):
     productos = Producto.objects.filter(activo=True, destacado=True).order_by("-created_at")[:8]
-    return render(request, "home.html", {"productos": productos})
+    home_config = HomeConfig.objects.first()
+    banners = Banner.objects.filter(activo=True).order_by("orden")
+    return render(request, "home.html", {
+        "productos": productos,
+        "cfg": home_config,
+        "banners": banners
+    })
 
 def catalogo_lista(request):
     q = request.GET.get("q", "").strip()
