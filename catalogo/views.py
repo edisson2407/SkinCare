@@ -265,6 +265,5 @@ def home(request):
         "productos": productos
     })
 
-def get_queryset(self):
-        return Producto.objects.filter(activo=True)
+
 
