@@ -22,6 +22,8 @@ ALLOWED_HOSTS = os.getenv(
 ).split(",")
 
 
+
+
 # Aplicaciones
 INSTALLED_APPS = [
     'cloudinary_storage',
@@ -117,7 +119,7 @@ STATIC_URL = 'static/'
 STATIC_ROOT = BASE_DIR / "staticfiles"
 STATICFILES_DIRS = [BASE_DIR / "static"]
 
-STATICFILES_STORAGE = "whitenoise.storage.CompressedManifestStaticFilesStorage"
+STATICFILES_STORAGE = "whitenoise.storage.StaticFilesStorage"
 WHITENOISE_USE_FINDERS = True
 
 
@@ -133,6 +135,12 @@ DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 # Tailwind
 TAILWIND_APP_NAME = 'theme'
 INTERNAL_IPS = ["127.0.0.1"]
+
+
+
+# Configuración de Cloudinary
+INSTALLED_APPS.insert(0, 'cloudinary_storage') # Debe ir al inicio
+INSTALLED_APPS.append('cloudinary')
 
 CLOUDINARY_STORAGE = {
     'CLOUD_NAME': os.getenv('CLOUDINARY_CLOUD_NAME'),
